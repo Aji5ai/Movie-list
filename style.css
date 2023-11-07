@@ -1,0 +1,36 @@
+html  { 
+	height: 100%;
+	width: 100%;
+}
+
+body {
+    background-color: #fecc00;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+}
+
+h1,h2 {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap : 20px;
+}
+
+article {
+    background-color: white;
+    padding: 20px;
+    width: auto;
+}
