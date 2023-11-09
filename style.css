@@ -1,98 +1,129 @@
+/* Reset des styles de base */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-  }
-  
-  #container {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr));
-    gap: 20px;
-    justify-items: center;
-  }
-  
-  article {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-  
-  h3 {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-  
-  p {
-    font-size: 1rem;
-    margin: 0;
-  }
-  
-  img {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-  }
-  
-  /* Media queries for responsiveness */
-  @media (max-width: 768px) {
-    #container {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-  }
-  
-  @media (max-width: 480px) {
-    #container {
-      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-    }
-  
-    article {
-      padding: 15px;
-    }
-  }
-
-
-/* html  { 
-	height: 100%;
-	width: 100%;
+  background-color: #f4ef78;
+  font-family: "Roboto", sans-serif;
+  margin: 20px;
+  padding: 0;
 }
 
-body {
-    background-color: #fecc00;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-
-}
-
-h1,h2 {
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-h1 {
-    text-align: center;
-}
-
-p {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
+/* Mise en page de la liste de films */
 #container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap : 20px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  justify-items: center;
 }
 
+/* Style des articles de films */
 article {
-    background-color: white;
-    padding: 20px;
-    width: auto;
-} */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Style des titres de films */
+h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333333;
+}
+
+/* Style des sous-titres de films */
+h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #555555;
+}
+
+/* Style des paragraphes de films */
+p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #2a2929;
+  font-family: "Lucida Sans", Verdana, sans-serif;
+}
+
+/* Style des images de films */
+img {
+  max-width: 100%;
+  height: auto;
+  max-height: 400px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Media queries pour la responsivité */
+@media (max-width: 768px) {
+  #container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  #container {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+
+  article {
+    padding: 15px;
+  }
+}
+
+/* Style des boutons */
+.btn-styled {
+  background-color: #ff0000;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  border: none;
+}
+
+/* Style des boutons au survol */
+.btn-styled:hover {
+  background-color: #cc0000;
+}
+
+/* Style du formulaire */
+form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 50%;
+}
+
+/* Style des labels dans le formulaire */
+form label {
+  margin-bottom: 5px;
+}
+
+/* Style des champs dans le formulaire */
+form input,
+form textarea,
+form select {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+}
+
+/* Style du bouton "Ajouter le film" dans le formulaire */
+#addMovieBtn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+  margin: 5px auto;
+}
+
+/* Style du bouton au survol dans le formulaire */
+#addMovieBtn:hover {
+  background-color: #45a049;
+}
