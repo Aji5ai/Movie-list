@@ -63,25 +63,38 @@ let movieList = [
   },
 ];
 
-console.log(movieList);
-
 // Récupération du formulaire
 const addMovieForm = document.getElementById("addMovieForm");
 
 // Récupération du bouton "Ajouter le film"
 const addMovieBtn = document.getElementById("addMovieBtn");
 
+// Fonction pour créer un élément HTML avec des options
+function createHtmlElement(tag, text, options) {
+  const element = document.createElement(tag); // Créé l'élément, un p, un h1 .. selon le tag spécifié à l'appel
+  if (text) {
+    element.innerText = text; // Si du text est donné en argument, ça l'ajoute en innerText
+  }
+  if (options) { //Si on a une ou des options
+    for (let key in options) { //On boucle sur chaque option pour l'ajouter
+      element[key] = options[key];  //prends chaque option ajoutée, et une à une l'ajoute. Par ex si on a deux options{ src: "path/to/image.jpg", class: "photo" }); ça va créer à la première boucle le src puis le class à la deuxième.
+    }
+  }
+  return element;
+}
+
 // Fonction pour créer un élément film HTML
 function createMovieElement(movie) {
-  const container = document.getElementById("container");
+  const container = document.getElementById("container"); /* récupère le contenu de la div située sous le form */
+  //Création d'un article, de son bouton supprimer (avec attibution nom class et innertext)
   const node = document.createElement("article");
   const btnDelete = document.createElement("button");
   btnDelete.type = "button";
   btnDelete.className = "btn-styled";
-  btnDelete.innerHTML = "Retirer de ma liste";
+  btnDelete.innerText = "Retirer de ma liste";
 
-  const movieElements = [
-    createHtmlElement("h2", movie.title),
+  const movieElements = [ //Attention createHTMLElement est définie au dessus de createMovieElement
+    createHtmlElement("h2", movie.title), //permet de créer un titre h2 avec en texte le titre du film
     createHtmlElement("h3", "Année : " + movie.releaseYear),
     createHtmlElement("p", "Durée : " + movie.duration + " minutes"),
     createHtmlElement("p", "Directeur : " + movie.director),
@@ -93,40 +106,27 @@ function createMovieElement(movie) {
   ];
 
   for (let data of movieElements) {
-    node.appendChild(data);
+    node.appendChild(data); //on ajoute en noeud dans l'article chaque élément créé et contenu dans le tableau movieElements
   }
 
-  container.appendChild(node);
+  container.appendChild(node); // Puis on prend les articles de chaque film et on l'ajoute dans le container
 
   btnDelete.addEventListener("click", function () {
-    container.removeChild(node);
+    container.removeChild(node); // Au click sur le bouton supprimer, on enlève du DOM l'article correspondant (contenu dans le container)
   });
 }
 
-// Fonction pour créer un élément HTML avec des options
-function createHtmlElement(tag, text, options) {
-  const element = document.createElement(tag);
-  if (text) {
-    element.innerText = text;
-  }
-  if (options) {
-    for (let key in options) {
-      element[key] = options[key];
-    }
-  }
-  return element;
-}
 
 // Affichage de la liste de films
-for (let movie of movieList) {
+for (let movie of movieList) { //Pour chaque élément du tableau on appelle la fonction qui permet de créer un article de film
   createMovieElement(movie);
 }
 
-// Ajoute un événement de clic au bouton "Ajouter le film"
+// Ajoute un EventListener lorsqu'on clique sur le bouton "Ajouter le film"
 addMovieBtn.addEventListener("click", function () {
-  const newMovie = {
-    title: addMovieForm.querySelector("#title").value,
-    releaseYear: parseInt(addMovieForm.querySelector("#releaseYear").value),
+  const newMovie = { // Objet qui permet de recueillir les infos rentrées par l'utilisateur
+    title: addMovieForm.querySelector("#title").value, // récupère la valeur (le texte tapée dans le champ) du titre
+    releaseYear: parseInt(addMovieForm.querySelector("#releaseYear").value), //parseInt pour mettre en integer ce qui est rentré par l'utilisateur
     duration: parseInt(addMovieForm.querySelector("#duration").value),
     director: addMovieForm.querySelector("#director").value,
     actors: addMovieForm
@@ -154,157 +154,3 @@ addMovieBtn.addEventListener("click", function () {
     confirmationMessage.innerText = "";
   }, 3000);
 });
-
-// Ancienne version compliquée, au dessus version simplifiée puis re adaptée
-/* 
-console.log(movieList);
-
-// Récupération du formulaire
-const addMovieForm = document.getElementById("addMovieForm");
-
-// Récupération du bouton "Ajouter le film"
-const addMovieBtn = document.getElementById("addMovieBtn");
-
-// Affichage de la liste de films
-for (let movie of movieList) {
-  // récupération du conteneur html
-  const container = document.getElementById("container");
-
-  // Création des éléments html à remplir ensuite
-  const node = document.createElement("article");
-  const title = document.createElement("h2");
-  const releaseYear = document.createElement("h3");
-  const duration = document.createElement("p");
-  const director = document.createElement("p");
-  const actors = document.createElement("p");
-  const description = document.createElement("p");
-  const rating = document.createElement("p");
-  const poster = document.createElement("img");
-  // Création des boutons
-  const btnDelete = document.createElement("button");
-  btnDelete.type = "button";
-  btnDelete.className = "btn-styled";
-
-  // Intégration de contenu dans les éléments html de films
-  const movieElements = [
-    title,
-    releaseYear,
-    duration,
-    director,
-    actors,
-    description,
-    rating,
-    poster,
-    btnDelete,
-  ];
-
-  // Remplissage des éléments avec les données du film
-  title.innerText = movie.title;
-  releaseYear.innerText = "Année : " + movie.releaseYear;
-  duration.innerText = "Durée : " + movie.duration;
-  director.innerText = "Directeur : " + movie.director;
-  actors.innerText = "Acteurs : " + movie.actors.join(', ');
-  description.innerText = "Résumé : " + movie.description;
-  rating.innerText = "Note : " + movie.rating;
-  poster.src = movie.poster;
-  btnDelete.innerHTML = "Retirer de ma liste";
-
-  // Ajout des éléments de films dans le html, dans node/article
-  for (let data of movieElements) {
-    node.appendChild(data);
-  }
-
-  // Ajout de l'article complet dans le container du html
-  container.appendChild(node);
-
-  // Ajout de l'événement de suppression
-  btnDelete.addEventListener("click", function () {
-    // Supprimer l'article du DOM
-    container.removeChild(node);
-  });
-}
-
-// Ajoute un événement de clic au bouton "Ajouter le film"
-addMovieBtn.addEventListener("click", function () {
-  // Récupère les valeurs du formulaire
-  const title = addMovieForm.querySelector("#title").value;
-  const releaseYear = parseInt(addMovieForm.querySelector("#releaseYear").value);
-  const duration = parseInt(addMovieForm.querySelector("#duration").value);
-  const director = addMovieForm.querySelector("#director").value;
-  const actors = addMovieForm.querySelector("#actors").value.split(',').map(actor => actor.trim());
-  const description = addMovieForm.querySelector("#description").value;
-  const rating = parseFloat(addMovieForm.querySelector("#rating").value);
-  const poster = addMovieForm.querySelector("#poster").value;
-
-  // Crée un objet film avec les valeurs du formulaire
-  const newMovie = {
-    title,
-    releaseYear,
-    duration,
-    director,
-    actors,
-    description,
-    rating,
-    poster,
-  };
-
-  // Ajoute le nouveau film à la liste
-  movieList.push(newMovie);
-  console.log(movieList);
-
-  // Crée un nouvel élément d'article pour le nouveau film
-  const newNode = document.createElement("article");
-
-  // Création des éléments html à remplir ensuite
-  const newTitle = document.createElement("h2");
-  const newReleaseYear = document.createElement("h3");
-  const newDuration = document.createElement("p");
-  const newDirector = document.createElement("p");
-  const newActors = document.createElement("p");
-  const newDescription = document.createElement("p");
-  const newRating = document.createElement("p");
-  const newPoster = document.createElement("img");
-  // Création du bouton Supprimer
-  const newBtnDelete = document.createElement("button");
-  newBtnDelete.type = "button";
-  newBtnDelete.className = "btn-styled";
-
-  // Intégration de contenu dans les éléments html du nouveau film
-  const newMovieElements = [
-    newTitle,
-    newReleaseYear,
-    newDuration,
-    newDirector,
-    newActors,
-    newDescription,
-    newRating,
-    newPoster,
-    newBtnDelete,
-  ];
-
-  // Remplissage des éléments avec les données du nouveau film
-  newTitle.innerText = newMovie.title;
-  newReleaseYear.innerText = "Année : " + newMovie.releaseYear;
-  newDuration.innerText = "Durée : " + newMovie.duration;
-  newDirector.innerText = "Directeur : " + newMovie.director;
-  newActors.innerText = "Acteurs : " + newMovie.actors.join(', ');
-  newDescription.innerText = "Résumé : " + newMovie.description;
-  newRating.innerText = "Note : " + newMovie.rating;
-  newPoster.src = newMovie.poster;
-  newBtnDelete.innerHTML = "Retirer de ma liste";
-
-  // Ajout des éléments du nouveau film dans le html, dans le nouvel article
-  for (let data of newMovieElements) {
-    newNode.appendChild(data);
-  }
-
-  // Ajout du nouvel article dans le container du html
-  container.appendChild(newNode);
-
-  // Ajout de l'événement de suppression pour le nouveau film
-  newBtnDelete.addEventListener("click", function () {
-    // Supprimer le nouvel article du DOM
-    container.removeChild(newNode);
-  });
-});
- */
