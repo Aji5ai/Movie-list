@@ -1,4 +1,6 @@
-let movieList = [
+// Pour charger la liste de films qui est dans le localStorage, ou utiliser la liste par défaut si dessous
+let movieList = JSON.parse(localStorage.getItem("movieList")) || [
+  //Json.parse prend du string et le remets en objet ou array. Donc on récupère le texte stocké en local storage pour le remettre en objet, dans movieList
   {
     title: "Avatar",
     releaseYear: 2009,
@@ -75,9 +77,11 @@ function createHtmlElement(tag, text, options) {
   if (text) {
     element.innerText = text; // Si du text est donné en argument, ça l'ajoute en innerText
   }
-  if (options) { //Si on a une ou des options
-    for (let key in options) { //On boucle sur chaque option pour l'ajouter
-      element[key] = options[key];  //prends chaque option ajoutée, et une à une l'ajoute. Par ex si on a deux options{ src: "path/to/image.jpg", class: "photo" }); ça va créer à la première boucle le src puis le class à la deuxième.
+  if (options) {
+    //Si on a une ou des options
+    for (let key in options) {
+      //On boucle sur chaque option pour l'ajouter
+      element[key] = options[key]; //prends chaque option ajoutée, et une à une l'ajoute. Par ex si on a deux options{ src: "path/to/image.jpg", class: "photo" }); ça va créer à la première boucle le src puis le class à la deuxième.
     }
   }
   return element;
@@ -93,7 +97,8 @@ function createMovieElement(movie) {
   btnDelete.className = "btn-styled";
   btnDelete.innerText = "Retirer de ma liste";
 
-  const movieElements = [ //Attention createHTMLElement est définie au dessus de createMovieElement
+  const movieElements = [
+    //Attention createHTMLElement est définie au dessus de createMovieElement
     createHtmlElement("h2", movie.title), //permet de créer un titre h2 avec en texte le titre du film
     createHtmlElement("h3", "Année : " + movie.releaseYear),
     createHtmlElement("p", "Durée : " + movie.duration + " minutes"),
@@ -101,7 +106,7 @@ function createMovieElement(movie) {
     createHtmlElement("p", "Acteurs : " + movie.actors.join(", ")),
     createHtmlElement("p", "Résumé : " + movie.description),
     createHtmlElement("p", "Note : " + movie.rating + "/10"),
-    createHtmlElement("img", null, { src: movie.poster }),
+    createHtmlElement("img", null, {src: movie.poster}),
     btnDelete,
   ];
 
@@ -113,18 +118,37 @@ function createMovieElement(movie) {
 
   btnDelete.addEventListener("click", function () {
     container.removeChild(node); // Au click sur le bouton supprimer, on enlève du DOM l'article correspondant (contenu dans le container)
+    movieList = movieList.filter((m) => m !== movie); // Supprime le film spécifié de la liste des films dans movieList.
+    // La méthode filter crée un nouveau tableau en parcourant chaque élément du tableau d'origine (movieList) et en appliquant une condition.
+    // Ici, la condition (m !== movie) vérifie si chaque film (m) n'est pas strictement égal au film spécifique que l'on souhaite supprimer.
+    // Les films qui satisfont cette condition sont conservés dans le nouveau tableau résultant.
+    // En assignant ce nouveau tableau à movieList, on met à jour la liste des films, excluant ainsi le film spécifié.    
+    updateLocalStorage(); //Puis on écrase la liste présente dans local storage par la nouvelle
   });
 }
 
-
 // Affichage de la liste de films
-for (let movie of movieList) { //Pour chaque élément du tableau on appelle la fonction qui permet de créer un article de film
+for (let movie of movieList) {
+  //Pour chaque élément du tableau on appelle la fonction qui permet de créer un article de film
   createMovieElement(movie);
+}
+
+
+// Fonction permettant d'écraser la liste de films contenue dans localStorage par celle qui est contenu en variable dans ce code. Permet donc d'actualiser la list du localstorage.
+function updateLocalStorage() {
+  localStorage.setItem("movieList", JSON.stringify(movieList)); // En fait pas besoin de retirer l'anciene clé - valeur, suffit de reprendre la clé et de changer sa valeur pour l'écraser (remplacer). Donc setItem au lieu de removeItem et setItem à nouveau. JSPN.stringify pour stocker en chaine de caractère et pas en objet/tableau, l'objet/tableau. Sinon local storage n'arrivera pas à stocker la valeur d'un objet si c'est pas en string.
+}
+
+// Function to create a movie element and update local storage
+function createAndStoreMovieElement(movieToCreate) {//movieToCreate = newMovie, c'est donc le film ajouté par l'utilisateur
+  createMovieElement(movieToCreate); //la fonction createAndStoreMovieElement est appellée lorsque l'utilisateur clique sur le bouton ajouter un film. Elle va appeler la fonction createMovieElement sur movieToCreate, qui correspond en fait à newMovie (le film créé par l'utilisateur). Dans un premier temps on créé donc un article avec les valeurs données par l'utilisateur, puis on update le Local Storage pour ajouter l'article créé dans la liste de films.
+  updateLocalStorage();
 }
 
 // Ajoute un EventListener lorsqu'on clique sur le bouton "Ajouter le film"
 addMovieBtn.addEventListener("click", function () {
-  const newMovie = { // Objet qui permet de recueillir les infos rentrées par l'utilisateur
+  const newMovie = {
+    // Objet qui permet de recueillir les infos rentrées par l'utilisateur
     title: addMovieForm.querySelector("#title").value, // récupère la valeur (le texte tapée dans le champ) du titre
     releaseYear: parseInt(addMovieForm.querySelector("#releaseYear").value), //parseInt pour mettre en integer ce qui est rentré par l'utilisateur
     duration: parseInt(addMovieForm.querySelector("#duration").value),
@@ -138,9 +162,7 @@ addMovieBtn.addEventListener("click", function () {
   };
 
   movieList.push(newMovie);
-  console.log(movieList);
-
-  createMovieElement(newMovie);
+  createAndStoreMovieElement(newMovie);
 
   // Réinitialise le formulaire pour vider les champs
   addMovieForm.reset();
@@ -154,3 +176,4 @@ addMovieBtn.addEventListener("click", function () {
     confirmationMessage.innerText = "";
   }, 3000);
 });
+
