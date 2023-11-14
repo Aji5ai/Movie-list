@@ -1,3 +1,5 @@
+/*  EXPLICATIONS DETAILÉES DU SCRIPT EN FIN DE CODE */
+
 // Pour charger la liste de films qui est dans le localStorage, ou utiliser la liste par défaut si dessous
 let movieList = JSON.parse(localStorage.getItem("movieList")) || [
   //Json.parse prend du string et le remets en objet ou array. Donc on récupère le texte stocké en local storage pour le remettre en objet, dans movieList
@@ -139,7 +141,7 @@ function updateLocalStorage() {
   localStorage.setItem("movieList", JSON.stringify(movieList)); // En fait pas besoin de retirer l'anciene clé - valeur, suffit de reprendre la clé et de changer sa valeur pour l'écraser (remplacer). Donc setItem au lieu de removeItem et setItem à nouveau. JSPN.stringify pour stocker en chaine de caractère et pas en objet/tableau, l'objet/tableau. Sinon local storage n'arrivera pas à stocker la valeur d'un objet si c'est pas en string.
 }
 
-// Function to create a movie element and update local storage
+// Fonction permettant de créer un élément de film et de mettre à jour la liste contenue en local storage
 function createAndStoreMovieElement(movieToCreate) {//movieToCreate = newMovie, c'est donc le film ajouté par l'utilisateur
   createMovieElement(movieToCreate); //la fonction createAndStoreMovieElement est appellée lorsque l'utilisateur clique sur le bouton ajouter un film. Elle va appeler la fonction createMovieElement sur movieToCreate, qui correspond en fait à newMovie (le film créé par l'utilisateur). Dans un premier temps on créé donc un article avec les valeurs données par l'utilisateur, puis on update le Local Storage pour ajouter l'article créé dans la liste de films.
   updateLocalStorage();
@@ -177,3 +179,47 @@ addMovieBtn.addEventListener("click", function () {
   }, 3000);
 });
 
+
+
+/*  EXPLICATIONS */
+/* Ce script permet d’afficher une liste de films sur une page internet via le DOM, mais également de modifier cette liste, que ce soit en supprimant des films ou en en ajoutant avec un formulaire.
+
+Fonctionnement du code par étapes logiques :
+
+Vérification si une liste de film est présente dans le local storage. 
+  Si oui on l’utilise sous le nom de movieList, sinon on utilise celle par défaut (du même nom), qui est présente en tableau d’objets en début du code.
+  On récupère ensuite le formulaire html et son bouton de validation permettant d’ajouter un film.
+
+On prépare une fonction permettant de créer les éléments qui vont dans l’article de chaque film, par exemple un paragraphe contenant tel texte, telle affiche, tel titre etc. 
+  La fonction permet de créer facilement ces éléments en leur assignant directement des textes et des options si besoin. En résumé, au lieu de créer un paragraphe, puis de le récupérer pour lui mettre un texte, puis de le reprendre pour lui mettre une classe par exemple, et de refaire ça pour chaque élément à mettre dans l’article, on fait tout avec une seule fonction.
+
+On commence la fonction principale qui permet de créer un article de film dans le DOM.
+  Dans un premier temps elle récupère le container html dans lequel les films (=articles html) vont aller. Elle crée un article, et un bouton pour supprimer avec une classe et un texte.
+
+  Dans un second temps la fonction crée un tableau, movieElements, qui contient tous les éléments html du film qu’on désire afficher. 
+    Donc par exemple un h2 avec en texte le nom du film. Ces éléments sont créés par la fonction qu’on a définie plus haut, createHtmlElement. Cette fonction principale, createMovieElement, étant appelée sur chaque film contenu dans l’array movieList, ce sont les titres, années etc de ces objets qui sont utilisés par createHtmlElement pour faire les balises html. Movie.releaseyear fait donc référence à l’année du film qui est en train d’être créé en DOM pour être affiché. Les données du film existent déjà dans le tableau movieList, mais n’existent pas encore en éléments du DOM et donc dans le html qu’on veut afficher. C'est la fonction actuelle qui permet de faire ça.
+
+  Une fois ce tableau d’éléments html d’un film créé, on boucle dessus pour ajouter chacun de ses éléments, un par un, au nœud principal qui est notre article (node). L’article est donc composé de p, h3, etc.
+
+  Toujours dans notre fonction principale permettant d’afficher les films, on souhaite permettre au bouton « supprimer le film » qui a été créé et affiché par cette même fonction, de … supprimer le film. 
+    On lui met donc un eventListener dessus, pour que au clic de l’utilisateur : on enlève du container l’article en question. 
+    Mais ensuite, on souhaite aussi retirer le film/article de la liste de films movieList. Car oui pour rappel, là on l’a enlevé de l’affichage en l’enlevant du DOM, mais pas en vrai dans le tableau qui liste nos films. Donc pour ça on filtre la liste des films, pour ne garder que les films non concernés par la suppression, et on les met dans un tableau qui vient écraser/remplacer le précédent.
+
+Maintenant qu’on a fini de déclarer la fonction, on l'appelle sur chaque élément du tableau, donc pour chaque film de notre liste, afin de les créer tous.
+
+On va ensuite définir deux autres fonctions :
+  updateLocalStorage(), qui permet d'écraser la liste de films contenue dans localStorage par celle qui est contenu en variable dans ce code. Permet donc d'actualiser la lisete du localstorage.
+
+  Et la fonction createAndStoreMovieElement(movieToCreate). Cette fonction est appelée lorsque l'utilisateur clique sur le bouton ajouter un film. Elle va appeler la fonction createMovieElement sur movieToCreate, qui correspond en fait à newMovie (le film créé par l'utilisateur). Dans un premier temps on crée donc un article avec les valeurs données par l'utilisateur, puis on update le Local Storage pour ajouter l'article créé dans la liste de films.
+
+Une fois ces deux fonctions créées, on va s’occuper du formulaire pour ajouter de nouveaux films.
+  On fait un event listener sur le bouton du formulaire « ajouter le film ». Lorsque le formulaire est validé, on va récupérer les valeurs entrées par l’utilisateur pour chaque champ. On récupère en titre le texte entré par l’utilisateur, pareil pour l’année la durée etc. Certaines valeurs vont être parse en chiffre ou en float pour obtenir les bons formats. Toutes les valeurs récupérées sont associées en clé valeur dans un objet newMovie.
+
+  C’est cet objet qu’on push dans le tableau de la liste de films existante, permettant ainsi d’ajouter un film à notre liste. Maintenant qu’il est dans la liste on veut l’ajouter dans le dom pour qu’il soit affiché. On utilise donc createAndStoreMovieElement sur cet objet de film, pour créer le film en dom et pour ensuite actualiser la liste du local storage avec.
+
+  Maintenant que tout est bon, on vide les champs de texte du formulaire, puis on prévient l’utilisateur que le film a bien été ajouté avec un message temporaire qui disparaît au bout de 3 secondes.
+
+Et voilà !
+
+En résumé, lorsqu'un film est créé, on l’ajoute à la liste et on le crée en dom, puis on actualise la liste du local storage pour qu’il soit retenu dans le navigateur de l’utilisateur.
+ */
