@@ -8,75 +8,73 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div>
+    <h1>Votre liste de films préférés</h1>
+    <button id="buttonShowForm">Ajouter un film</button>
+    <div id="form">
+      <h2 class="form__mainTitle">
+        Formulaire pour ajouter un film à votre liste
+      </h2>
       <form id="addMovieForm">
         <label for="title">Titre :</label>
         <input
           type="text"
           id="title"
           name="title"
-          placeholder="Entrez le titre du film"          
-        />
+          placeholder="Entrez le titre du film" />
 
         <label for="releaseYear">Année de sortie :</label>
         <input
           type="number"
           id="releaseYear"
           name="releaseYear"
-          placeholder="Entrez l'année de sortie"
-        />
+          placeholder="Entrez l'année de sortie" />
 
         <label for="duration">Durée :</label>
         <input
           type="number"
           id="duration"
           name="duration"
-          placeholder="Entrez la durée en minutes"          
-        />
+          placeholder="Entrez la durée en minutes" />
 
         <label for="director">Directeur :</label>
         <input
           type="text"
           id="director"
           name="director"
-          placeholder="Entrez le nom du directeur du film"
-        />
+          placeholder="Entrez le nom du directeur du film" />
 
         <label for="actors">Acteurs :</label>
         <input
           type="text"
           id="actors"
           name="actors"
-          placeholder="Entrez les noms des acteurs, séparés par des virgules"
-        />
+          placeholder="Entrez les noms des acteurs, séparés par des virgules" />
 
         <label for="description">Résumé :</label>
         <textarea
           id="description"
           name="description"
-          placeholder="Entrez le résumé du film"
-        ></textarea>
+          placeholder="Entrez le résumé du film"></textarea>
 
         <label for="rating">Note/10 :</label>
         <input
           type="number"
           id="rating"
           name="rating"
-          placeholder="Entrez la note sur 10"
-        />
+          placeholder="Entrez la note sur 10" />
 
         <label for="poster">URL de l'affiche :</label>
         <input
           type="url"
           id="poster"
           name="poster"
-          placeholder="Entrez l'URL de l'affiche (non requis)"
-        />
+          placeholder="Entrez l'URL de l'affiche (non requis)" />
 
         <p id="addFilmSuccess"></p>
         <button type="button" id="addMovieBtn">Ajouter le film</button>
       </form>
     </div>
-    <div id="container"></div> <!-- Pour contenir la liste de films -->
+    <div id="container"></div>
+    <!-- Pour contenir la liste de films -->
   </body>
 </html>

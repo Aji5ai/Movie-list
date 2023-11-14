@@ -1,50 +1,64 @@
 /* Reset des styles de base */
 body {
-  background-color: #f4ef78;
+  background-color: #f7ede2;
   font-family: "Roboto", sans-serif;
   margin: 20px;
   padding: 0;
+  color: #480355;
+}
+
+h1 {
+  text-align: center;
 }
 
 /* Mise en page de la liste de films */
 #container {
   display: grid;
   grid-template-columns: repeat(3, minmax(300px, 1fr));
-  gap: 15px;
+  gap: 30px;
   margin-top: 20px;
   justify-items: center;
 }
 
 /* Style des articles de films */
 article {
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: #a0eec8;
   border-radius: 5px;
   padding: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 3px #595859;
   text-align: center;
+  margin-top: 2rem;
 }
 
 /* Style des titres de films */
 h2 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin: 0;
-  color: #333333;
+  padding-bottom: 10px;
+}
+
+.form__mainTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 3rem;
+  padding-bottom: 10px;
 }
 
 /* Style des sous-titres de films */
 h3 {
   font-size: 1.2rem;
   margin: 0;
-  color: #555555;
+  color: #14213d;
 }
 
 /* Style des paragraphes de films */
 p {
   font-size: 1rem;
-  margin-bottom: 10px;
-  color: #2a2929;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  color: black;
   font-family: "Lucida Sans", Verdana, sans-serif;
+  text-align: left;
 }
 
 /* Style des images de films */
@@ -75,8 +89,8 @@ img {
 
 /* Style des boutons */
 .btn-styled {
-  background-color: #ff0000;
-  color: #ffffff;
+  background-color: #e5e5e5;
+  color: #480355;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -87,14 +101,21 @@ img {
 
 /* Style des boutons au survol */
 .btn-styled:hover {
-  background-color: #cc0000;
+  background-color: #14213d;
+  color: rgb(255, 93, 93);
+  font-weight: bold;
 }
 
 /* Style du formulaire */
+#form {
+  display: none;
+}
+
 form {
   display: flex;
   flex-direction: column;
   margin: auto;
+  margin-top: 2rem;
   width: 50%;
 }
 
@@ -113,8 +134,9 @@ form select {
 }
 
 /* Style du bouton "Ajouter le film" dans le formulaire */
-#addMovieBtn {
-  background-color: #4caf50;
+#addMovieBtn,
+#buttonShowForm {
+  background-color: #7699d4;
   color: white;
   border: none;
   padding: 10px;
@@ -125,6 +147,8 @@ form select {
 }
 
 /* Style du bouton au survol dans le formulaire */
-#addMovieBtn:hover {
-  background-color: #45a049;
+#addMovieBtn:hover,
+#buttonShowForm:hover {
+  background-color: #45a083;
+  font-weight: bold;
 }

@@ -91,7 +91,10 @@ function createHtmlElement(tag, text, options) {
 
 // Fonction pour créer un élément film HTML
 function createMovieElement(movie) {
-  const container = document.getElementById("container"); /* récupère le contenu de la div située sous le form */
+  const container =
+    document.getElementById(
+      "container"
+    ); /* récupère le contenu de la div située sous le form */
   //Création d'un article, de son bouton supprimer (avec attibution nom class et innertext)
   const node = document.createElement("article");
   const btnDelete = document.createElement("button");
@@ -124,7 +127,7 @@ function createMovieElement(movie) {
     // La méthode filter crée un nouveau tableau en parcourant chaque élément du tableau d'origine (movieList) et en appliquant une condition.
     // Ici, la condition (m !== movie) vérifie si chaque film (m) n'est pas strictement égal au film spécifique que l'on souhaite supprimer.
     // Les films qui satisfont cette condition sont conservés dans le nouveau tableau résultant.
-    // En assignant ce nouveau tableau à movieList, on met à jour la liste des films, excluant ainsi le film spécifié.    
+    // En assignant ce nouveau tableau à movieList, on met à jour la liste des films, excluant ainsi le film spécifié.
     updateLocalStorage(); //Puis on écrase la liste présente dans local storage par la nouvelle
   });
 }
@@ -135,14 +138,14 @@ for (let movie of movieList) {
   createMovieElement(movie);
 }
 
-
 // Fonction permettant d'écraser la liste de films contenue dans localStorage par celle qui est contenu en variable dans ce code. Permet donc d'actualiser la list du localstorage.
 function updateLocalStorage() {
   localStorage.setItem("movieList", JSON.stringify(movieList)); // En fait pas besoin de retirer l'anciene clé - valeur, suffit de reprendre la clé et de changer sa valeur pour l'écraser (remplacer). Donc setItem au lieu de removeItem et setItem à nouveau. JSPN.stringify pour stocker en chaine de caractère et pas en objet/tableau, l'objet/tableau. Sinon local storage n'arrivera pas à stocker la valeur d'un objet si c'est pas en string.
 }
 
 // Fonction permettant de créer un élément de film et de mettre à jour la liste contenue en local storage
-function createAndStoreMovieElement(movieToCreate) {//movieToCreate = newMovie, c'est donc le film ajouté par l'utilisateur
+function createAndStoreMovieElement(movieToCreate) {
+  //movieToCreate = newMovie, c'est donc le film ajouté par l'utilisateur
   createMovieElement(movieToCreate); //la fonction createAndStoreMovieElement est appellée lorsque l'utilisateur clique sur le bouton ajouter un film. Elle va appeler la fonction createMovieElement sur movieToCreate, qui correspond en fait à newMovie (le film créé par l'utilisateur). Dans un premier temps on créé donc un article avec les valeurs données par l'utilisateur, puis on update le Local Storage pour ajouter l'article créé dans la liste de films.
   updateLocalStorage();
 }
@@ -179,7 +182,24 @@ addMovieBtn.addEventListener("click", function () {
   }, 3000);
 });
 
+function showForm() { //Pour cacher ou afficher le formulaire d'ajout de film
+  let x = document.getElementById("form");
+  let style = window.getComputedStyle(x);
 
+  if (style.display === "none" || style.display === "") {
+    x.style.display = "block";
+    document.getElementById("buttonShowForm").innerText = "Cacher";
+  } else {
+    x.style.display = "none";
+    document.getElementById("buttonShowForm").innerText = "Ajouter un film";
+  }
+}
+// On récupère le bouton et quand on clique ça lance la fonction showForm qui affiche ou cache le formulaire d'ajout de film
+document
+  .getElementById("buttonShowForm")
+  .addEventListener("click", function () {
+    showForm();
+  });
 
 /*  EXPLICATIONS */
 /* Ce script permet d’afficher une liste de films sur une page internet via le DOM, mais également de modifier cette liste, que ce soit en supprimant des films ou en en ajoutant avec un formulaire.
